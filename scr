@@ -49,6 +49,44 @@ do
         Callback = function()
             if SelectedIsland == 'MarineFord' then
                 tween(CFrame.new(-4813.0249, 903.708557, -1912.69055),valuetween)
+            elseif SelectedIsland == 'Frozen Village' then
+                tween(CFrame.new(1198.00928, 27.0074959, -1211.73376),valuetween)
+            elseif SelectedIsland == 'Desert' then
+                tween(CFrame.new(1094.14587, 6.47350502, 4192.88721),valuetween)
+            elseif SelectedIsland == 'Pirate Village' then
+                tween(CFrame.new(-1122.34998, 4.78708982, 3855.91992),valuetween)
+            elseif SelectedIsland == 'Jungle' then
+                tween(CFrame.new(-1249.77222, 11.8870859, 341.356476),valuetween)
+            elseif SelectedIsland == 'Middle Town' then
+                tween(CFrame.new(-655.824158, 7.88708115, 1436.67908),valuetween)
+            elseif SelectedIsland == 'Marine Start' then
+                tween(CFrame.new(-2573.3374, 6.88881969, 2046.99817),valuetween)
+            elseif SelectedIsland == 'Pirate Start' then
+                tween(CFrame.new(1071.2832, 16.3085976, 1426.86792),valuetween)
+            elseif SelectedIsland == 'Colosseum' then
+                tween(CFrame.new(-1428.35474, 7.38933945, -3014.3730),valuetween)
+            elseif SelectedIsland == 'Sky island 1' then
+                tween(CFrame.new(-4970.21875, 717.707275, -2622.35449),valuetween)
+            elseif SelectedIsland == 'Sky island 2' then
+                tween(CFrame.new(-4813.0249, 903.708557, -1912.69055),valuetween)
+            elseif SelectedIsland == 'Sky island 3' then
+                tween(CFrame.new(-7952.31006, 5545.52832, -320.704956),valuetween)
+            elseif SelectedIsland == 'Sky island 4' then
+                tween(CFrame.new(-7793.43896, 5607.22168, -2016.58362),valuetween)
+            elseif SelectedIsland == 'Prison' then
+                tween(CFrame.new(4854.16455, 5.68742752, 740.194641),valuetween)
+            elseif SelectedIsland == 'Magma Village' then
+                tween(CFrame.new(-5231.75879, 8.61593437, 8467.87695),valuetween)
+            elseif SelectedIsland == 'UnderWater City' then
+                tween(CFrame.new(61163.8516, 11.7796879, 1819.78418),valuetween)
+            elseif SelectedIsland == 'Fountain City' then
+                tween(CFrame.new(5132.7124, 4.53632832, 4037.8562),valuetween)
+            elseif SelectedIsland == "House Cyborg's" then
+                tween(CFrame.new(6262.72559, 71.3003616, 3998.23047),valuetween)
+            elseif SelectedIsland == "Shank's Room" then
+                tween(CFrame.new(-1442.16553, 29.8788261, -28.3547478),valuetween)
+            elseif SelectedIsland == "Mob Island" then
+                tween(CFrame.new(-2850.20068, 7.39224768, 5354.99268),valuetween)
             end        
         end
     })
