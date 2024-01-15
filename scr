@@ -1,7 +1,14 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
+local lplr = game.Players.LocalPlayer
+function tween(cf)
+    local ts = game:GetService("TweenService")
+    local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*0.003,Enum.EasingStyle.Linear)
+    local a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
+    a:Play()
+    Tween.Complete:wait()
+end
 local Window = Fluent:CreateWindow({
     Title = "Fluent " .. Fluent.Version,
     SubTitle = "by dawid",
@@ -12,7 +19,6 @@ local Window = Fluent:CreateWindow({
     MinimizeKey = Enum.KeyCode.LeftControl -- Used when theres no MinimizeKeybind
 })
 
---Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
     Main = Window:AddTab({ Title = "Main", Icon = "" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
@@ -38,27 +44,10 @@ do
 
 
     Tabs.Main:AddButton({
-        Title = "Button",
+        Title = "Tween",
         Description = "Very important button",
         Callback = function()
-            Window:Dialog({
-                Title = "Title",
-                Content = "This is a dialog",
-                Buttons = {
-                    {
-                        Title = "Confirm",
-                        Callback = function()
-                            print("Confirmed the dialog.")
-                        end
-                    },
-                    {
-                        Title = "Cancel",
-                        Callback = function()
-                            print("Cancelled the dialog.")
-                        end
-                    }
-                }
-            })
+            tween(CFrame.new(-4813.0249, 903.708557, -1912.69055))
         end
     })
 
@@ -255,6 +244,4 @@ Fluent:Notify({
     Duration = 8
 })
 
--- You can use the SaveManager:LoadAutoloadConfig() to load a config
--- which has been marked to be one that auto loads!
 SaveManager:LoadAutoloadConfig()
