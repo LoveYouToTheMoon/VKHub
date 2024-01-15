@@ -2,9 +2,9 @@ local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 local lplr = game.Players.LocalPlayer
-function tween(cf)
+function tween(cf,Value)
     local ts = game:GetService("TweenService")
-    local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*0.003,Enum.EasingStyle.Linear)
+    local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*(SpeedTween/1000),Enum.EasingStyle.Linear)
     local a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
     a:Play()
     Tween.Complete:wait()
@@ -47,7 +47,9 @@ do
         Title = "Tween",
         Description = "Very important button",
         Callback = function()
-            tween(CFrame.new(-4813.0249, 903.708557, -1912.69055))
+            if SelectedIsland == 'MarineFord' then
+                tween(CFrame.new(-4813.0249, 903.708557, -1912.69055),valuetween)
+            end        
         end
     })
 
@@ -66,9 +68,9 @@ do
     local Slider = Tabs.Main:AddSlider("Slider", {
         Title = "Slider",
         Description = "This is a slider",
-        Default = 2,
+        Default = 3,
         Min = 0,
-        Max = 5,
+        Max = 10,
         Rounding = 1,
         Callback = function(Value)
             print("Slider was changed:", Value)
@@ -76,24 +78,23 @@ do
     })
 
     Slider:OnChanged(function(Value)
-        print("Slider changed:", Value)
+        SpeedTween = Value
     end)
-
     Slider:SetValue(3)
 
 
 
     local Dropdown = Tabs.Main:AddDropdown("Dropdown", {
         Title = "Dropdown",
-        Values = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen"},
+        Values = {"MarineFord", "Frozen Village", "Desert", "Pirate Village", "Jungle", "Middle Town", "Marine Start", "Pirate Start", "Colosseum", "Sky island 1", "Sky island 2", "Sky island 3", "Sky island 4", "Prison", "Magma Village", "UnderWater City", "Fountain City", "House Cyborg's", "Shank's Room", "Mob Island"},
         Multi = false,
         Default = 1,
     })
 
-    Dropdown:SetValue("four")
+    Dropdown:SetValue("MarineFord")
 
     Dropdown:OnChanged(function(Value)
-        print("Dropdown changed:", Value)
+        SelectedIsland = Value
     end)
 
 
