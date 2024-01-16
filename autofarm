@@ -12,19 +12,19 @@ function CheckLevel()
        Ms = "Bandit [Lv. 5]" 
        Qn = "BanditQuest1"
        Mn = "Bandit"
-       LevelQ = "1"
+       LevelQ = 1
        CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
     elseif Level == 10 or Level <=14 then
        Ms = "Monkey [Lv. 14]" 
        Qn = "JungleQuest"
        Mn = "Monkey"
-       LevelQ = "1"
+       LevelQ = 1
        CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
     elseif Level == 15 or Level <=29 then
         Ms = "Gorilla [Lv. 20]" 
         Qn = "JungleQuest"
         Mn = "Gorilla"
-        LevelQ = "2"
+        LevelQ = 2
         CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
     end
 end
@@ -43,7 +43,7 @@ spawn(function()
             local args = {
                 [1] = "StartQuest",
                 [2] = Qn,
-                [3] = tonumber(LevelQ)
+                [3] = LevelQ
             }
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
         end
