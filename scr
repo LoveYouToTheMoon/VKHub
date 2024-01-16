@@ -51,7 +51,7 @@ do
             print("Slider was changed:", Value)
         end
     })
-
+    SpeedTween = 3
     Slider:OnChanged(function(Value)
         SpeedTween = Value
     end)
@@ -65,7 +65,7 @@ do
     })
 
     Dropdown:SetValue("MarineFord")
-
+    SelectedIsland = MarineFord
     Dropdown:OnChanged(function(Value)
         SelectedIsland = Value
     end)
@@ -120,7 +120,7 @@ do
 
 
 
-    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Toggle", Default = false })
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Buso", Default = true })
 
     Toggle:OnChanged(function()
         if Options.MyToggle.Value == true then
