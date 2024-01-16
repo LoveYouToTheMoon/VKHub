@@ -1,6 +1,9 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
+local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
+_G.AutoAttack = false
 local lplr = game.Players.LocalPlayer
 function tween(cf,Value)
     local ts = game:GetService("TweenService")
@@ -8,6 +11,40 @@ function tween(cf,Value)
     local a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
     a:Play()
     Tween.Complete:wait()
+end
+function CheckLevel()
+    local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
+    if Level==1 or Level <=9 then
+       Ms = "Bandit [Lv. 5]" 
+       Qn = "BanditQuest1"
+       Mn = "Bandit"
+       LevelQ = 1
+       CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
+    elseif Level == 10 or Level <=14 then
+       Ms = "Monkey [Lv. 14]" 
+       Qn = "JungleQuest"
+       Mn = "Monkey"
+       LevelQ = 1
+       CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+    elseif Level == 15 or Level <=29 then
+        Ms = "Gorilla [Lv. 20]" 
+        Qn = "JungleQuest"
+        Mn = "Gorilla"
+        LevelQ = 2
+        CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+    end
+end
+if _G.AutoAttack == true then
+    Camera:Stop()
+    coroutine.wrap(function()
+        game:GetService("RunService").Stepped:Connect(function()
+            if getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack then
+                getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 0
+                getupvalues(CombatFramework)[2]['activeController'].hitboxMagnitude = 50
+                getupvalues(CombatFramework)[2]['activeController']:attack()
+            end
+        end)
+    end)()
 end
 local Window = Fluent:CreateWindow({
     Title = "VKHub " .. Fluent.Version,
@@ -75,7 +112,7 @@ do
         Description = "Very important button",
         Callback = function()
             if SelectedIsland == 'MarineFord' then
-                tween(CFrame.new(-4813.0249, 903.708557, -1912.69055),valuetween)
+                tween(CFrame.new(-4505.375, 20.687294, 4260.55908),valuetween)
             elseif SelectedIsland == 'Frozen Village' then
                 tween(CFrame.new(1198.00928, 27.0074959, -1211.73376),valuetween)
             elseif SelectedIsland == 'Desert' then
@@ -120,7 +157,7 @@ do
 
 
 
-    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Buso", Default = true })
+    local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Buso", Default = false })
 
     Toggle:OnChanged(function()
         if Options.MyToggle.Value == true then
@@ -129,7 +166,44 @@ do
             end
         end 
     end)
+    local Toggle = Tabs.Main:AddToggle("AutoFarmToggle", {Title = "Auto Farm", Default = false })
 
+    Toggle:OnChanged(function()
+        _G.AutoAttack = Options.AutoFarmToggle.Value
+        if Options.AutoFarmToggle.Value == true then
+            spawn(function()
+                while wait() do
+                    CheckLevel()
+                    if lplr.PlayerGui.Main.Quest.Visible == false then
+                        if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
+                            local args = {
+                                [1] = "AbandonQuest"
+                            }
+                            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                            wait()
+                        end
+                        tween(CFrameQuest)
+                        local args = {
+                            [1] = "StartQuest",
+                            [2] = Qn,
+                            [3] = LevelQ
+                        }
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                    end
+                    for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                        for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                            if v.Name == Ms and v2.Name == Ms then
+                                lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,-17, 12)
+                                v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                v.HumanoidRootPart.CanCollide = false
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                            end
+                        end
+                    end
+                end
+            end)
+        end 
+    end)
     Options.MyToggle:SetValue(false)
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
         Title = "Dropdown",
