@@ -49,7 +49,7 @@ spawn(function()
         end
         for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
             for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                if v.Name == Ms and v2.Name == Ms then
+                if v.Name == Mn and v2.Name == Mn then
                     lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,-17, 12)
                     v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
                     v.HumanoidRootPart.CanCollide = false
