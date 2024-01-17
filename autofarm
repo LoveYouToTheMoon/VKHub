@@ -1,5 +1,4 @@
 local lplr = game.Players.LocalPlayer
-_G.mob = false
 function tween(cf)
     local ts = game:GetService("TweenService")
     local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*0.003,Enum.EasingStyle.Linear)
@@ -69,20 +68,16 @@ spawn(function()
             wait(0.5)
         end
         for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-            if _G.mob == false then
-                tween(CFrameMon)
-            end
             for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                li = {}
-                table.insert(li,v.Name)
                 if v.Name == Mn and v2.Name == Mn then
-                    _G.mob = true
-                    v.HumanoidRootPart.Size = Vector3.new(2,2,1)
-                    v.HumanoidRootPart.CanCollide = false
-                    v.Head.CanCollide = false
-                    lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,30, 0)
-                    v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                    repeat
+                        v.HumanoidRootPart.Size = Vector3.new(2,2,1)
+                        v.HumanoidRootPart.CanCollide = false
+                        v.Head.CanCollide = false
+                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,30, 0)
+                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                    until v.Humanoid.Health or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
                 end
             end
         end
