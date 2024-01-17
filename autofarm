@@ -27,6 +27,7 @@ function CheckLevel()
         LevelQ = 2
         CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
         tween(CFrame.new(-1223.52808, 6.27936459, -502.292664))
+        wait()
     end
 end
 spawn(function()
