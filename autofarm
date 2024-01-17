@@ -26,33 +26,36 @@ function CheckLevel()
         Mn = "Gorilla"
         LevelQ = 2
         CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+        tween(CFrame.new(-1223.52808, 6.27936459, -502.292664))
     end
 end
 spawn(function()
-    CheckLevel()
-    if lplr.PlayerGui.Main.Quest.Visible == false then
-        if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
+    while wait() do
+        CheckLevel()
+        if lplr.PlayerGui.Main.Quest.Visible == false then
+            if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
+                local args = {
+                    [1] = "AbandonQuest"
+                }
+                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                wait()
+            end
+            tween(CFrameQuest)
             local args = {
-                [1] = "AbandonQuest"
+                [1] = "StartQuest",
+                [2] = Qn,
+                [3] = LevelQ
             }
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-            wait()
         end
-        tween(CFrameQuest)
-        local args = {
-            [1] = "StartQuest",
-            [2] = Qn,
-            [3] = LevelQ
-        }
-        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-    end
-    for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-        for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-            if v.Name == Mn and v2.Name == Mn then
-                lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,-17, 12)
-                v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                v.HumanoidRootPart.CanCollide = false
-                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+        for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+            for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                if v.Name == Mn and v2.Name == Mn then
+                    lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,-17, 12)
+                    v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                    v.HumanoidRootPart.CanCollide = false
+                    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                end
             end
         end
     end
