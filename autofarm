@@ -14,12 +14,14 @@ function CheckLevel()
        Mn = "Bandit"
        LevelQ = 1
        CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
+       CFrameMon = CFrame.new(1199.31287, 52.2717781, 1536.91516)
     elseif Level == 10 or Level <=14 then
        Ms = "Monkey [Lv. 14]" 
        Qn = "JungleQuest"
        Mn = "Monkey"
        LevelQ = 1
        CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+       CFrameMon = CFrame.new(-1772.4093017578, 60.860641479492, 54.872589111328)
     elseif Level == 15 or Level <=29 then
         Ms = "Gorilla [Lv. 20]" 
         Qn = "JungleQuest"
@@ -27,6 +29,20 @@ function CheckLevel()
         LevelQ = 2
         CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
         CFrameMon = CFrame.new(-1223.52808, 6.27936459, -502.292664)
+    elseif Level == 30 or Level <=39 then
+        Ms = "Pirate [Lv. 35]" 
+        Qn = "BuggyQuest1"
+        Mn = "Pirate"
+        LevelQ = 1
+        CFrameQuest = CFrame.new(-1139.59717, 4.75205183, 3825.16211)
+        CFrameMon = CFrame.new(-1219.32324, 4.75205183, 3915.63452)
+    elseif Level == 40 or Level <=59 then
+        Ms = "Brute [Lv. 45]" 
+        Qn = "BuggyQuest1"
+        Mn = "Brute"
+        LevelQ = 2
+        CFrameQuest = CFrame.new(-1139.59717, 4.75205183, 3825.1621)
+        CFrameMon = CFrame.new(-1146.49646, 96.0936813, 4312.1333)
     end
 end
 spawn(function()
@@ -41,7 +57,7 @@ spawn(function()
                 wait()
             end
             tween(CFrameQuest)
-            wait()
+            wait(4)
             local args = {
                 [1] = "StartQuest",
                 [2] = Qn,
@@ -49,7 +65,7 @@ spawn(function()
             }
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
             tween(CFrameMon)
-            wait()
+            wait(0.5)
         end
         for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
             for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
@@ -62,6 +78,7 @@ spawn(function()
                     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                 end
             end
+            tween(CFrameMon)
         end
     end
 end)
