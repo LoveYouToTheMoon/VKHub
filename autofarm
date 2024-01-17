@@ -77,7 +77,9 @@ spawn(function()
                         lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,30, 0)
                         v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
                         sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                    until v.Humanoid.Health or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                    until v.Humanoid.Health <= 0 and v.Humanoid.Health <= 0 or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                    tween(CFrameMon)
+                    wait()
                 end
             end
         end
