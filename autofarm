@@ -65,7 +65,7 @@ spawn(function()
             }
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
             tween(CFrameMon)
-            wait(0.5)
+            wait()
         end
         if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
             for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
