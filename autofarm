@@ -67,22 +67,24 @@ spawn(function()
             tween(CFrameMon)
             wait(0.5)
         end
-        for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-            for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                if v.Name == Mn and v2.Name == Mn then
-                    repeat
-                        v.HumanoidRootPart.Size = Vector3.new(2,2,1)
-                        v.HumanoidRootPart.CanCollide = false
-                        v.Head.CanCollide = false
-                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,30, 0)
-                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                    until v.Humanoid.Health <= 0 and v2.Humanoid.Health <= 0 or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
-                    wait()
-                    tween(CFrameMon)
-                    wait()
+        if game:GetService("Workspace").Enemies:FindFirstChild(Ms) then
+            for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                    if v.Name == Mn and v2.Name == Mn then
+                            v.HumanoidRootPart.Size = Vector3.new(2,2,1)
+                            v.HumanoidRootPart.CanCollide = false
+                            v.Head.CanCollide = false
+                        repeat
+                            lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,30, 0)
+                            v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                            sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                        until v.Humanoid.Health <= 0 or game.Players.LocalPlayer.PlayerGui.Main.Quest.Visible == false
+                    end
                 end
             end
+        else
+            tween(CFrameMon)
+            wait()
         end
     end
 end)
