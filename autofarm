@@ -69,7 +69,7 @@ spawn(function()
             tween(CFrameQuest)
             wait()
         end
-        if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
+        if game:GetService("Workspace").Enemies:FindFirstChild("Pirate") then
             tween(CFrameMon)
             for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
                 for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
