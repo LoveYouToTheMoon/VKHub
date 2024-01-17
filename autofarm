@@ -26,8 +26,7 @@ function CheckLevel()
         Mn = "Gorilla"
         LevelQ = 2
         CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
-        tween(CFrame.new(-1223.52808, 6.27936459, -502.292664))
-        wait()
+        CFrameMon = CFrame.new(-1223.52808, 6.27936459, -502.292664)
     end
 end
 spawn(function()
@@ -48,6 +47,7 @@ spawn(function()
                 [3] = LevelQ
             }
             game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            tween(CFrameMon)
         end
         for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
             for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
