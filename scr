@@ -236,18 +236,19 @@ function CheckLevel()
         CFrameMon = CFrame.new(5658.5752, 38.5361786, 4928.93506)
     end
 end
-function tween(cf,Value)
-    local ts = game:GetService("TweenService")
-    local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*(SpeedTween/1000),Enum.EasingStyle.Linear)
-    local a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
-    a:Play()
-    Tween.Complete:wait()
-end
+
 function StopTween()
 	pcall(function()
-		tween:Cancel()
+		a:Cancel()
 		wait()
 	end)
+end
+function tween(cf)
+    ts = game:GetService("TweenService")
+    local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*0.003,Enum.EasingStyle.Linear)
+    a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
+    a:Play()
+    wait()
 end
 local Window = Fluent:CreateWindow({
     Title = "VKHub " .. Fluent.Version,
@@ -389,7 +390,7 @@ do
 
     Toggle:OnChanged(function(Value)
         _G.AutoAttack = Value
-        _G.AutoFarm = Value
+        _G.AutoFarmLevel = Value
         if Value == true then
             AutoFarmLevel()
         end
