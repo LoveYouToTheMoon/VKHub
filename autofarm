@@ -81,20 +81,24 @@ spawn(function()
         end
         if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
             for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                repeat wait()
-                    for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                        if v.Name == Mn and v2.Name == Mn then
-                            v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                            v.HumanoidRootPart.CanCollide = false
-                            v.Head.CanCollide = false
-                            v2.Head.CanCollide = false
-                            v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                            lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
-                            sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                if v.Name == Mn then
+                    repeat
+                        for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                            if v.Name == Mn and v2.Name == Mn then
+                                v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                v.HumanoidRootPart.CanCollide = false
+                                v.Head.CanCollide = false
+                                v2.Head.CanCollide = false
+                                v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
+                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                            end
                         end
-                    end
-                until v.Humanoid.Health <=0
+                    until v.Humanoid.Health <=0
+                end
             end
+        else
+            tween(CFrameMon)
         end
     end
 end)
