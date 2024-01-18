@@ -1,4 +1,5 @@
 local lplr = game.Players.LocalPlayer
+_G.AutoFarmLevel = true
 local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
 local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
 Camera:Stop()
@@ -17,6 +18,25 @@ function tween(cf)
     local a = ts:Create(lplr.Character.HumanoidRootPart,tsi,{CFrame = cf * CFrame.new(0,0,1)})
     a:Play()
     wait()
+end
+function CheckQuest()
+    if lplr.PlayerGui.Main.Quest.Visible == false then
+        if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
+            local args = {
+                [1] = "AbandonQuest"
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            wait()
+        end
+        tween(CFrameQuest)
+        wait(4)
+        local args = {
+            [1] = "StartQuest",
+            [2] = Qn,
+            [3] = LevelQ
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    end
 end
 function CheckLevel()
     local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
@@ -57,46 +77,34 @@ function CheckLevel()
         CFrameMon = CFrame.new(-1146.49646, 96.0936813, 4312.1333)
     end
 end
-spawn(function()
-    while wait() do
-        CheckLevel()
-        if lplr.PlayerGui.Main.Quest.Visible == false then
-            if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
-                local args = {
-                    [1] = "AbandonQuest"
-                }
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                wait()
-            end
-            tween(CFrameQuest)
-            wait(4)
-            local args = {
-                [1] = "StartQuest",
-                [2] = Qn,
-                [3] = LevelQ
-            }
-            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+if _G.AutoFarmLevel == true then
+    spawn(function()
+        while wait() do
+            CheckLevel()
+            CheckQuest()
             tween(CFrameMon)
             wait(1)
-        end
-        if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
-            for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                    if v.Name == Mn and v2.Name == Mn then
-                        repeat wait()
-                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                        v.HumanoidRootPart.CanCollide = false
-                        v.Head.CanCollide = false
-                        v2.Head.CanCollide = false
-                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
-                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                        until v.Humanoid.Health <=0 
+            if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
+                for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v.Name == Mn then
+                        repeat
+                            if game:GetService("Workspace").Enemies:FindFirstChild(Mn) and v.Humanoid.Health > 0 and v:FindFirstChild("Humanoid") then
+                                for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                                    if v.Name == Mn and v2.Name == Mn then
+                                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                        v.HumanoidRootPart.CanCollide = false
+                                        v.HumanoidRootPart.CanCollide = false
+                                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
+                                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                                    end
+                                end
+                            end        
+                        until not v.Parent or v.Humanoid.Health <= 0 or lplr.PlayerGui.Main.Quest.Visible == false or _G.AutoFarmLevel == false 
                     end
                 end
+            else
+                tween(CFrameMon)
             end
-        else
-            tween(CFrameMon)
         end
-    end
-end)
+    end)
+end
