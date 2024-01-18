@@ -1,11 +1,241 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
-local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
 _G.AutoAttack = false
-_G.AutoFarm = false
+_G.AutoFarmLevel = false
+function EquipWeapon(ToolSe)
+    for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+        if v.ToolTip == ToolSe then
+            game.Players.LocalPlayer.Character.Humanoid:EquipTool(v)            
+        end
+        wait(.1)
+    end
+  end
 local lplr = game.Players.LocalPlayer
+function AutoFarmLevel()
+    spawn(function()
+        while _G.AutoFarmLevel==true and wait() do
+            CheckLevel()
+            CheckQuest()
+            EquipWeapon(Equip)
+            tween(CFrameMon)
+            wait(1)
+            if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
+                for i,v in pairs(game:GetService("Workspace").Enemies:GetChildren()) do
+                    if v.Name == Mn then
+                        if game:GetService("Workspace").Enemies:FindFirstChild(Mn) then
+                            repeat wait()
+                                for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
+                                    if v.Name == Mn and v2.Name == Mn then
+                                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+                                        v.HumanoidRootPart.CanCollide = false
+                                        v2.HumanoidRootPart.CanCollide = false
+                                        v.HumanoidRootPart.Size = Vector3.new(50, 50, 50)
+                                        v2.HumanoidRootPart.Size = Vector3.new(50, 50, 50)
+                                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
+                                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+                                    end
+                                end
+                            until not v.Parent or v.Humanoid.Health <= 0 or lplr.PlayerGui.Main.Quest.Visible == false or _G.AutoFarmLevel == false 
+                        else
+                            tween(CFrameMon)
+                        end
+                    end
+                end
+            else
+                tween(CFrameMon)
+            end
+        end
+    end)
+end
+function AutoAttack()
+    local CombatFramework = require(game:GetService("Players").LocalPlayer.PlayerScripts.CombatFramework)
+    local Camera = require(game.ReplicatedStorage.Util.CameraShaker)
+    Camera:Stop()
+    while _G.AutoAttack == true do
+        coroutine.wrap(function()
+            game:GetService("RunService").Stepped:Connect(function()
+                if getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack then
+                    getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 0
+                    getupvalues(CombatFramework)[2]['activeController'].hitboxMagnitude = 80
+                    getupvalues(CombatFramework)[2]['activeController']:attack()
+                end
+            end)
+        end)()
+    end
+end
+function CheckQuest()
+    if lplr.PlayerGui.Main.Quest.Visible == false then
+        if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
+            local args = {
+                [1] = "AbandonQuest"
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            wait()
+        end
+        tween(CFrameQuest)
+        wait(4)
+        local args = {
+            [1] = "StartQuest",
+            [2] = Qn,
+            [3] = MyLevel
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    end
+end
+function CheckLevel()
+    local MyLevel = game:GetService("Players").LocalPlayer.Data.Level.Value
+    if MyLevel==1 or MyLevel <=9 then
+       Ms = "Bandit [Lv. 5]" 
+       Qn = "BanditQuest1"
+       Mn = "Bandit"
+       LevelQuest = 1
+       CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
+       CFrameMon = CFrame.new(1199.31287, 52.2717781, 1536.91516)
+    elseif MyLevel == 10 or MyLevel <=14 then
+       Ms = "Monkey [Lv. 14]" 
+       Qn = "JungleQuest"
+       Mn = "Monkey"
+       LevelQuest = 1
+       CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+       CFrameMon = CFrame.new(-1772.4093017578, 60.860641479492, 54.872589111328)
+    elseif MyLevel == 15 or MyLevel <=29 then
+        Ms = "Gorilla [Lv. 20]" 
+        Qn = "JungleQuest"
+        Mn = "Gorilla"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
+        CFrameMon = CFrame.new(-1223.52808, 6.27936459, -502.292664)
+    elseif MyLevel == 30 or MyLevel <=39 then
+        Ms = "Pirate [Lv. 35]" 
+        Qn = "BuggyQuest1"
+        Mn = "Pirate"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-1139.59717, 4.75205183, 3825.16211)
+        CFrameMon = CFrame.new(-1219.32324, 4.75205183, 3915.63452)
+    elseif MyLevel == 40 or MyLevel <=59 then
+        Ms = "Brute [Lv. 45]" 
+        Qn = "BuggyQuest1"
+        Mn = "Brute"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-1139.59717, 4.75205183, 3825.1621)
+        CFrameMon = CFrame.new(-1146.49646, 96.0936813, 4312.1333)
+    elseif MyLevel == 60 or MyLevel <= 74 then
+        Ms = "Desert Bandit [Lv. 60]"
+        Qn = "DesertQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(897.031128, 6.43846416, 4388.9716)
+        CFrameMon = CFrame.new(932.788818, 6.4503746, 4488.24609)
+    elseif MyLevel == 75 or MyLevel <= 89 then
+        Ms = "Desert Officer [Lv. 70]"
+        Qn = "DesertQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(897.031128, 6.43846416, 4388.9716)
+        CFrameMon = CFrame.new(1580.03198, 4.61375761, 4366.86426)
+    elseif MyLevel == 90 or MyLevel <= 99 then
+        Ms = "Snow Bandit [Lv. 90]"
+        Qn = "SnowQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(1384.14001, 87.272789, -1297.06482)
+        CFrameMon = CFrame.new(1370.24316, 102.403511, -1411.52905)
+    elseif MyLevel == 100 or MyLevel <= 119 then
+        Ms = "Snowman [Lv. 100]"
+        Qn = "SnowQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(1384.14001, 87.272789, -1297.06482)
+        CFrameMon = CFrame.new(1370.24316, 102.403511, -1411.52905)
+    elseif MyLevel == 120 or MyLevel <= 149 then
+        Ms = "Chief Petty Officer [Lv. 120]"
+        Qn = "MarineQuest2"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-5035.0835, 28.6520386, 4325.29443)
+        CFrameMon = CFrame.new(-4882.8623, 22.6520386, 4255.53516)
+    elseif MyLevel == 150 or MyLevel <= 174 then
+        Ms = "Sky Bandit [Lv. 150]"
+        Qn = "SkyQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-4841.83447, 717.669617, -2623.96436)
+        CFrameMon = CFrame.new(-4970.74219, 294.544342, -2890.11353)
+    elseif MyLevel == 175 or MyLevel <= 224 then
+        Ms = "Dark Master [Lv. 175]"
+        Qn = "SkyQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-4841.83447, 717.669617, -2623.96436)
+        CFrameMon = CFrame.new(-5220.58594, 430.693298, -2278.17456)
+    elseif MyLevel == 225 or MyLevel <= 274 then
+        Ms = "Toga Warrior [Lv. 225]"
+        Qn = "ColosseumQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-1576.11743, 7.38933945, -2983.30762)
+        CFrameMon = CFrame.new(-1779.97583, 44.6077499, -2736.35474)
+    elseif MyLevel == 275 or MyLevel <= 299 then
+        Ms = "Gladiator [Lv. 275]"
+        Qn = "ColosseumQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-1576.11743, 7.38933945, -2983.30762)
+        CFrameMon = CFrame.new(-1274.75903, 58.1895943, -3188.16309)
+    elseif MyLevel == 300 or MyLevel <= 329 then
+        Ms = "Military Soldier [Lv. 300]"
+        Qn = "MagmaQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-5316.55859, 12.2370615, 8517.2998)
+        CFrameMon = CFrame.new(-5363.01123, 41.5056877, 8548.47266)
+    elseif MyLevel == 300 or MyLevel <= 374 then
+        Ms = "Military Spy [Lv. 330]"
+        Qn = "MagmaQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-5316.55859, 12.2370615, 8517.2998)
+        CFrameMon = CFrame.new(-5787.99023, 120.864456, 8762.25293)
+    elseif MyLevel == 375 or MyLevel <= 399 then
+        Ms = "Fishman Warrior [Lv. 375]"
+        Qn = "FishmanQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(61122.5625, 18.4716396, 1568.16504)
+        CFrameMon = CFrame.new(61163.8515625, 5.3073043823242, 1819.7841796875)
+    elseif MyLevel == 400 or MyLevel <= 449 then
+        Ms = "Fishman Commando [Lv. 400]"
+        Qn = "FishmanQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(61122.5625, 18.4716396, 1568.16504)
+        CFrameMon = CFrame.new(61163.8515625, 5.3073043823242, 1819.7841796875)
+    elseif MyLevel == 450 or MyLevel <= 474 then
+        Ms = "God's Guard [Lv. 450]"
+        Qn = "SkyExp1Quest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-4721.71436, 845.277161, -1954.20105)
+        CFrameMon = CFrame.new(-4716.95703, 853.089722, -1933.925427)
+    elseif MyLevel == 475 or MyLevel <= 524 then
+        Ms = "Shanda [Lv. 475]"
+        Qn = "SkyExp1Quest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-7863.63672, 5545.49316, -379.826324)
+        CFrameMon = CFrame.new(-7685.12354, 5601.05127, -443.171509)
+    elseif MyLevel == 525 or MyLevel <= 549 then
+        Ms = "Royal Squad [Lv. 525]"
+        Qn = "SkyExp2Quest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(-7902.66895, 5635.96387, -1411.71802)
+        CFrameMon = CFrame.new(-7685.02051, 5606.87842, -1442.729)
+    elseif MyLevel == 550 or MyLevel <= 624 then
+        Ms = "Royal Soldier [Lv. 550]"
+        Qn = "SkyExp2Quest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(-7902.66895, 5635.96387, -1411.71802)
+        CFrameMon = CFrame.new(-7864.44775, 5661.94092, -1708.22351)
+    elseif MyLevel == 625 or MyLevel <= 649 then
+        Ms = "Galley Pirate [Lv. 625]"
+        Qn = "FountainQuest"
+        LevelQuest = 1
+        CFrameQuest = CFrame.new(5254.60156, 38.5011406, 4049.69678)
+        CFrameMon = CFrame.new(5595.06982, 41.5013695, 3961.47095)
+    elseif MyLevel >= 650 then
+        Ms = "Galley Captain [Lv. 650]"
+        Qn = "FountainQuest"
+        LevelQuest = 2
+        CFrameQuest = CFrame.new(5254.60156, 38.5011406, 4049.69678)
+        CFrameMon = CFrame.new(5658.5752, 38.5361786, 4928.93506)
+    end
+end
 function tween(cf,Value)
     local ts = game:GetService("TweenService")
     local tsi = TweenInfo.new((lplr.Character.HumanoidRootPart.Position-cf.Position).Magnitude*(SpeedTween/1000),Enum.EasingStyle.Linear)
@@ -13,94 +243,11 @@ function tween(cf,Value)
     a:Play()
     Tween.Complete:wait()
 end
-function CheckLevel()
-    local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-    if Level==1 or Level <=9 then
-       Ms = "Bandit [Lv. 5]" 
-       Qn = "BanditQuest1"
-       Mn = "Bandit"
-       LevelQ = 1
-       CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
-    elseif Level == 10 or Level <=14 then
-       Ms = "Monkey [Lv. 14]" 
-       Qn = "JungleQuest"
-       Mn = "Monkey"
-       LevelQ = 1
-       CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
-    elseif Level == 15 or Level <=29 then
-        Ms = "Gorilla [Lv. 20]" 
-        Qn = "JungleQuest"
-        Mn = "Gorilla"
-        LevelQ = 2
-        CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
-    end
-end
-if _G.AutoFarm == true then
-    function CheckLevel()
-        local Level = game:GetService("Players").LocalPlayer.Data.Level.Value
-        if Level==1 or Level <=9 then
-           Ms = "Bandit [Lv. 5]" 
-           Qn = "BanditQuest1"
-           Mn = "Bandit"
-           LevelQ = 1
-           CFrameQuest = CFrame.new(1061.66699, 16.5166187, 1544.52905)
-        elseif Level == 10 or Level <=14 then
-           Ms = "Monkey [Lv. 14]" 
-           Qn = "JungleQuest"
-           Mn = "Monkey"
-           LevelQ = 1
-           CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
-        elseif Level == 15 or Level <=29 then
-            Ms = "Gorilla [Lv. 20]" 
-            Qn = "JungleQuest"
-            Mn = "Gorilla"
-            LevelQ = 2
-            CFrameQuest = CFrame.new(-1604.12012, 36.8521118, 154.23732)
-        end
-    end
-    spawn(function()
-        while wait() do
-            CheckLevel()
-            if lplr.PlayerGui.Main.Quest.Visible == false then
-                if not string.find(lplr.PlayerGui.Main.Quest.Container.QuestTitle.Title.Text,Mn) then
-                    local args = {
-                        [1] = "AbandonQuest"
-                    }
-                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                    wait()
-                end
-                tween(CFrameQuest)
-                local args = {
-                    [1] = "StartQuest",
-                    [2] = Qn,
-                    [3] = LevelQ
-                }
-                game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-            end
-            for i,v in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                for i2,v2 in pairs(game:GetService('Workspace').Enemies:GetChildren()) do
-                    if v.Name == Mn and v2.Name == Mn then
-                        lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,-17, 12)
-                        v2.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-                        v.HumanoidRootPart.CanCollide = false
-                        sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                    end
-                end
-            end
-        end
-    end)
-end
-if _G.AutoAttack == true then
-    Camera:Stop()
-    coroutine.wrap(function()
-        game:GetService("RunService").Stepped:Connect(function()
-            if getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack then
-                getupvalues(CombatFramework)[2]['activeController'].timeToNextAttack = 0
-                getupvalues(CombatFramework)[2]['activeController'].hitboxMagnitude = 50
-                getupvalues(CombatFramework)[2]['activeController']:attack()
-            end
-        end)
-    end)()
+function StopTween()
+	pcall(function()
+		tween:Cancel()
+		wait()
+	end)
 end
 local Window = Fluent:CreateWindow({
     Title = "VKHub " .. Fluent.Version,
@@ -162,6 +309,19 @@ do
     Dropdown:OnChanged(function(Value)
         SelectedIsland = Value
     end)
+    local ChooseMelee = Tabs.Main:AddDropdown("ChooseMelee", {
+        Title = "Weapon",
+        Values = {"Melee","Sword","Gun","Devil Fruit"},
+        Multi = false,
+        Default = 1,
+    })
+
+    Dropdown:SetValue("Melee")
+    Equip = Melee
+    Dropdown:OnChanged(function(Value)
+        Equip = Value
+        _G.EquipWe = Value
+    end)
 
     Tabs.Main:AddButton({
         Title = "Tween",
@@ -210,9 +370,12 @@ do
             end        
         end
     })
-
-
-
+    Tabs.Main:AddButton({
+        Title = "Stop Tween",
+        Description = "STOP TWEEN",
+        Callback = function()
+        StopTween()
+    end})
     local Toggle = Tabs.Main:AddToggle("MyToggle", {Title = "Auto Buso", Default = false })
 
     Toggle:OnChanged(function()
@@ -224,9 +387,12 @@ do
     end)
     local Toggle = Tabs.Main:AddToggle("AutoFarmToggle", {Title = "Auto Farm", Default = false })
 
-    Toggle:OnChanged(function()
-        _G.AutoAttack = Options.AutoFarmToggle.Value
-        _G.AutoFarm = Options.AutoFarmToggle.Value
+    Toggle:OnChanged(function(Value)
+        _G.AutoAttack = Value
+        _G.AutoFarm = Value
+        if Value == true then
+            AutoFarmLevel()
+        end
     end)
     Options.MyToggle:SetValue(false)
     local MultiDropdown = Tabs.Main:AddDropdown("MultiDropdown", {
