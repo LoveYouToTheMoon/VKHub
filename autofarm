@@ -89,7 +89,7 @@ spawn(function()
                             v.Head.CanCollide = false
                             v2.Head.CanCollide = false
                             v2.HumanoidRootPart.CFrame = false
-                            lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0))
+                            lplr.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame * CFrame.new(0,50, 0)
                             sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
                         end
                     end
