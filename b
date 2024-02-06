@@ -4,10 +4,10 @@ end
 --Put Your Key Between ""
 script_key="aTiHadnVVSnkvVpViZoiKAEXPBatqQQE";
 DelayTime = 300
-getgenv().FpsBoost = true
 getgenv().Setting = {
-    ["Team"] = "Pirates", --Marines
+    ["Team"] = "Marines", --Marines
     ["Webhook"] = {
+        ["Url"] = "https://discord.com/api/webhooks/1189456500008165446/5cxerpu0WMC1GbFRE32YJiGmaJi9epVx2jDQa-SZfRhzw6Qc98-tSRRPMTgw8bkXNAUD",
         ["Enabled"] = true,
         ["Embed"] = true,
         ["StoredFruit"] = true,
@@ -17,10 +17,16 @@ getgenv().Setting = {
         ["OnServerHop"] = true,
         ["BountyChanged"] = true,
     }, 
-    ["Hide Theme"] = true,
-    ["3D Render Disable"] = true,
+    ["Panel"] = false,
+    ["FpsBoost"] = {
+        Enable = true,
+        Mode = "Lite",--Lite: Just Lower Graphics, Full: Completely Make All Objects Transparent
+    },
+    ["In Combat Reset"] = false, -- Shouldn't Cause Much False Resets, Enable This Make Farming Much Faster
+    ["Hide Theme"] = false,
+    ["3D Render Disable"] = false,
     ["Theme"] = {
-        ["Name"] = "Raiden",
+        ["Name"] = "Raiden",--"Old", "Raiden","Ayaka","Hutao","Yelan","Miko","Nahida","Ganyu","Keqing","Nilou","Barbara","Zhongli","Layla"
         ["Custom"] = {
             ["Enable"] = false,
             ['char_size'] = UDim2.new(0.668, 0, 1.158, 0),
@@ -36,6 +42,7 @@ getgenv().Setting = {
         ["Enable"] = true,
         ["Attempt"] = 5, -- Tween If Failed After x Attempts
     },
+    ["SpectatePlayer"] = false,
     ["Config"] = {
         ["nameaccount1"] = "nameconfig.txt",
         ["nameaccount2"] = "nameconfig.txt",
@@ -47,11 +54,12 @@ getgenv().Setting = {
         NearPlayer = true, -- Only use If Near Player
     },
     ["Auto Use Race V4"] = true, -- No Way you are turning this off
-    ["Auto Dash If Mink V4"] = true,
+    ["Auto Dash If Mink V4"] = false,
+    ["Auto Dash If Ghoul V4"] = false,
     ["Spam All Skill On Race Transform V4"] = false,
     ["Failed To Load Data"] = {
         Rejoin = true,
-        TimeToCheck = 10,
+        TimeToCheck = 30,
     },
     ["Detect KeyWords"] = { -- If There Is A Person Says A Key Word In Chat, It Will Stop Auto Bounty And  Server Hop
         Enable = false,
@@ -60,9 +68,10 @@ getgenv().Setting = {
     AutoConfigMelee = true,
     AutoConfigSword = true,
     AutoConfigFruit = false,
-    ["LimitServerHop"] ={
+    SwitchPlayerKeybind = "Q", -- Except Y Keybind
+    ["LimitServerHopTime"] ={ -- Only Hop After "Time" Seconds
         Enable = false,
-        Time = 600,
+        Time = 600, --Second
     },
     ["Position Config"] = {
         Mode = "Default",-- You Can Create Your Own Mode By Making An Index In The Table Like Custom
@@ -76,13 +85,9 @@ getgenv().Setting = {
         },
         ["Custom"] = {
             DistanceFromPlayer = {
-                x = 0, y = 3, z = 0
+                x = 1, y = 4, z = 0
             }
         }
-    },
-    ["Panel"] = {
-        ["Enabled"] = false,
-        ["IgnoreSelfChat"] = false,
     },
     ["ChatKill"] = {
         Enable = false,
@@ -102,85 +107,103 @@ getgenv().Setting = {
     ["LockBounty"] = {
         ["Enable"] = true,
         ["Cap"] = 30000000,
+        ["Action"] = "Kick", -- Kick, Shutdown
+        ["SendMessage"] = true,
+        ["Message"] = "Congratulation You Have Reached The Bounty Cap MyBounty 🔥 🔥 :fireworks: :fireworks: :fireworks:" -- It Will Replace MyBounty With Your Current Bounty, Add Ping Everyone If You Want
     },
     ["Click"] = {
         ["Enable"] = true,
-        ["FastClick"] = true,
+        ["FastClick"] = false,
         ["OnLowHealthDisable"] = false,
         ["LowHealth"] = 3000,
     },
     ["Misc"] = {
         ["AutoBuyRandomandStoreFruit"] = true,
-        ["AutoBuySurprise"] = false,
+        ["AutoBuySurprise"] = true,
     },
     ["Invisible"] = true, -- Self Explain
     ["IgnoreFriends"] = true, --Server Hop When Your friends in your server
     ["GunMethod"] = false, --Use Melee,Gun Will automaticly disable invisible for things
     ["GunMethodSetting"] = {
         LessSusKillTest=true,
-        StartHealth = 1500,
-        waittime=4,
-        EndHealth = 2000,
+        StartHealth = 2000, -- Below Is Setting For Decrease Sus Kill From Gun Method
+        waittime=10,
+        EndHealth = 4000,
+    },
+    ["Notify"] = {
+        Enable = true,
+        CustomIcon = false,
+        Image = "sticker.png", -- The Path Is: W-azure/AutoBounty/Notify
     },
     ["SpamSkill"] = false, -- Will use all skills as fast as possbile ignore holding skills
     ["Weapons"] = { -- Select Weapon, Self Explain
         ["Melee"] = {
             ["Enable"] = true,
-            ["Delay"] = 2,
+            ["Delay"] = 1.8,
             ["Skills"] = {
                 ["Z"] = {
                     ["Enable"] = true,
-                    ["HoldTime"] = 1.5,
+                    ["HoldTime"] = 1.3,
+                    ["TimeToNextSkill"] = 0.2,
                 },
-                ["X"] = {
+            [ "X"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
 
                 ["C"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
             },
         },
         ["Blox Fruit"] = {
             ["Enable"] = false,
-            ["Delay"] = 3,
+            ["Delay"] = 4,
             ["Skills"] = {
                 ["Z"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
                 ["X"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
 
                 ["C"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
                 ["V"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
                 ["F"] = {
                     ["Enable"] = false,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
             },
         },
         ["Sword"] = {
             ["Enable"] = true,
-            ["Delay"] = 1.5,
+            ["Delay"] = 3,
             ["Skills"] = {
                 ["Z"] = {
                     ["Enable"] = true,
-                    ["HoldTime"] = 0,
+                    ["HoldTime"] = 1.5,
+                    ["TimeToNextSkill"] = 0.2,
                 },
                 ["X"] = {
                     ["Enable"] = true,
-                    ["HoldTime"] = 0,
+                    ["HoldTime"] = 1.3,
+                    ["TimeToNextSkill"] = 0,
                 },
             },
         },
@@ -190,11 +213,13 @@ getgenv().Setting = {
             ["Skills"] = {
                 ["Z"] = {
                     ["Enable"] = true,
-                    ["HoldTime"] = 0,
+                    ["HoldTime"] = 1,
+                    ["TimeToNextSkill"] = 0,
                 },
                 ["X"] = {
                     ["Enable"] = true,
                     ["HoldTime"] = 0,
+                    ["TimeToNextSkill"] = 0,
                 },
             },
         },
@@ -210,4 +235,4 @@ delay(DelayTime or 300,function()
     end
 end)
 wait(2)
-loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/ef12e2cf26dbe1e9c5225df9477e8612.lua"))()
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/09a9f73907ea0c68509192eb30c65553.lua"))()
